@@ -1,6 +1,8 @@
 package com.example.weather.sickness.details.controller;
 
 import com.example.weather.sickness.details.service.UserService;
+import com.example.weather.sickness.details.service.enums.ErrorCodes;
+import com.example.weather.sickness.details.service.exception.WellnessWidgetException;
 import com.example.weather.sickness.details.service.vo.UserRequestVo;
 import com.example.weather.sickness.details.service.vo.UserResponseVo;
 import javax.validation.Valid;
@@ -21,30 +23,31 @@ import reactor.core.publisher.Mono;
 @RequestMapping("/v1/users")
 public class UserController {
 
-  @Autowired private UserService service;
+  @Autowired
+  private UserService service;
 
   @PostMapping
-  public ResponseEntity<Mono<UserResponseVo>> create(@Valid @RequestBody UserRequestVo request) {
+  public Mono<ResponseEntity<UserResponseVo>> create(@Valid @RequestBody UserRequestVo request) {
     Mono<UserResponseVo> response = service.create(request);
-    return new ResponseEntity<>(response, HttpStatus.OK);
+    return response.map(user -> ResponseEntity.ok().body(user));
   }
 
   @PutMapping
-  public ResponseEntity<Mono<UserResponseVo>> update(@Valid @RequestBody UserRequestVo request) {
+  public Mono<ResponseEntity<UserResponseVo>> update(@Valid @RequestBody UserRequestVo request) {
     Mono<UserResponseVo> response = service.update(request);
-    return new ResponseEntity<>(response, HttpStatus.OK);
+    return response.map(user -> ResponseEntity.ok().body(user));
   }
 
   @GetMapping
-  public ResponseEntity<Flux<UserResponseVo>> get() {
-    Flux<UserResponseVo> response = service.get().log();
-    return new ResponseEntity<>(response, HttpStatus.OK);
+  public Flux<UserResponseVo> get() {
+    Flux<UserResponseVo> response = service.get();
+    return response;
   }
 
   @GetMapping("/{username}")
-  public ResponseEntity<Mono<UserResponseVo>> getById(@PathVariable("username") String username) {
-    Mono<UserResponseVo> response = service.getById(username).log();
-    return new ResponseEntity<>(response, HttpStatus.OK);
+  public Mono<ResponseEntity<UserResponseVo>> getById(@PathVariable("username") String username) {
+    Mono<UserResponseVo> response = service.getById(username);
+    return response.map(user -> ResponseEntity.ok().body(user));
   }
 
 }
