@@ -46,10 +46,6 @@ public class WeatherServiceImpl implements WeatherService {
           return clientResponse.bodyToMono(String.class).flatMap(responseMessage -> Mono.error(
               new WellnessWidgetException(clientResponse.statusCode().value(), responseMessage)));
         })
-        .onStatus(HttpStatus::isError, clientResponse -> {
-          return clientResponse.bodyToMono(String.class).flatMap(responseMessage -> Mono.error(
-              new WellnessWidgetException(clientResponse.statusCode().value(), responseMessage)));
-        })
         .bodyToMono(WeatherResponseVo.class);
   }
 }

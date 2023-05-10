@@ -33,15 +33,17 @@ public class SicknessServiceImpl implements SicknessService {
 
   @Override
   public Mono<SicknessResponseVo> getSicknessDetails(SicknessRequestVo request)
-      throws WellnessWidgetException, ExecutionException, InterruptedException, TimeoutException {
+      throws ExecutionException, InterruptedException, TimeoutException {
     String country = request.getCountry();
 
     if (Objects.isNull(country)) {
-      Mono<User> user = userDao.findById(request.getUsername()).switchIfEmpty(Mono.error(
-          new WellnessWidgetException(ErrorCodes.USER_NOT_FOUND.getErrorCode(),
-              ErrorCodes.USER_NOT_FOUND.getMessage())));
+      Mono<User> user = userDao.findById(request.getUsername())
+          .switchIfEmpty(Mono.error(
+              new WellnessWidgetException(ErrorCodes.USER_NOT_FOUND.getErrorCode(),
+                  ErrorCodes.USER_NOT_FOUND.getMessage())));
 
-      User user1 = user.subscribeOn(Schedulers.boundedElastic()).toFuture()
+      User user1 = user.subscribeOn(Schedulers.boundedElastic())
+          .toFuture()
           .get(5L, TimeUnit.SECONDS);
 
       country = user1.getCountry();
@@ -64,10 +66,6 @@ public class SicknessServiceImpl implements SicknessService {
                 new WellnessWidgetException(HttpStatus.INTERNAL_SERVER_ERROR.value(),
                     "Some internal server error - external api"));
           }
-          return clientResponse.bodyToMono(String.class).flatMap(responseMessage -> Mono.error(
-              new WellnessWidgetException(clientResponse.statusCode().value(), responseMessage)));
-        })
-        .onStatus(HttpStatus::isError, clientResponse -> {
           return clientResponse.bodyToMono(String.class).flatMap(responseMessage -> Mono.error(
               new WellnessWidgetException(clientResponse.statusCode().value(), responseMessage)));
         })
