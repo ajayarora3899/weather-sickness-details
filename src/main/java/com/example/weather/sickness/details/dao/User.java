@@ -1,8 +1,10 @@
 package com.example.weather.sickness.details.dao;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+@Slf4j
 @Document(value = "user")
 public class User {
 
