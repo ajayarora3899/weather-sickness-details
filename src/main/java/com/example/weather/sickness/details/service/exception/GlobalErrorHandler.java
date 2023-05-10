@@ -24,6 +24,14 @@ public class GlobalErrorHandler {
     return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
   }
 
+  @ExceptionHandler(WellnessWidgetException.class)
+  public ResponseEntity<ExceptionResponse> serverExceptionHandler(WellnessWidgetException ex) {
+    ExceptionResponse response = new ExceptionResponse();
+    response.setErrorCode(ex.getErrorCode());
+    response.setMessage(ex.getMessage());
+    return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+  }
+
   @ExceptionHandler(Exception.class)
   public ResponseEntity<ExceptionResponse> serverExceptionHandler(Exception ex) {
     ExceptionResponse response = new ExceptionResponse();

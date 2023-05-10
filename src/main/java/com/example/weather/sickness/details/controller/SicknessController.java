@@ -2,10 +2,13 @@ package com.example.weather.sickness.details.controller;
 
 import com.example.weather.sickness.details.service.SicknessService;
 import com.example.weather.sickness.details.service.WeatherService;
+import com.example.weather.sickness.details.service.exception.WellnessWidgetException;
 import com.example.weather.sickness.details.service.vo.SicknessRequestVo;
 import com.example.weather.sickness.details.service.vo.SicknessResponseVo;
 import com.example.weather.sickness.details.service.vo.WeatherRequestVo;
 import com.example.weather.sickness.details.service.vo.WeatherResponseVo;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,7 +28,8 @@ public class SicknessController {
 
   @PostMapping
   public ResponseEntity<Mono<SicknessResponseVo>> getSicknessDetails(
-      @Valid @RequestBody SicknessRequestVo request) {
+      @Valid @RequestBody SicknessRequestVo request)
+      throws WellnessWidgetException, ExecutionException, InterruptedException, TimeoutException {
     Mono<SicknessResponseVo> response = service.getSicknessDetails(request);
     return new ResponseEntity<>(response, HttpStatus.OK);
   }
