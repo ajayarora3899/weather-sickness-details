@@ -4,6 +4,7 @@ import com.example.weather.sickness.details.service.WeatherService;
 import com.example.weather.sickness.details.service.vo.WeatherRequestVo;
 import com.example.weather.sickness.details.service.vo.WeatherResponseVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponentsBuilder;

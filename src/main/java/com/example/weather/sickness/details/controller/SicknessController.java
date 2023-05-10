@@ -1,6 +1,9 @@
 package com.example.weather.sickness.details.controller;
 
+import com.example.weather.sickness.details.service.SicknessService;
 import com.example.weather.sickness.details.service.WeatherService;
+import com.example.weather.sickness.details.service.vo.SicknessRequestVo;
+import com.example.weather.sickness.details.service.vo.SicknessResponseVo;
 import com.example.weather.sickness.details.service.vo.WeatherRequestVo;
 import com.example.weather.sickness.details.service.vo.WeatherResponseVo;
 import javax.validation.Valid;
@@ -14,17 +17,17 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
 @RestController
-@RequestMapping("/v1/weather")
-public class WeatherController {
+@RequestMapping("/v1/sickness")
+public class SicknessController {
 
   @Autowired
-  private WeatherService service;
+  private SicknessService service;
 
   @PostMapping
-  public ResponseEntity<Mono<WeatherResponseVo>> getWeatherDetails(
-      @Valid @RequestBody WeatherRequestVo request) {
-    Mono<WeatherResponseVo> response = service.getWeatherDetails(request);
+  public ResponseEntity<Mono<SicknessResponseVo>> getSicknessDetails(
+      @Valid @RequestBody SicknessRequestVo request) {
+    Mono<SicknessResponseVo> response = service.getSicknessDetails(request);
     return new ResponseEntity<>(response, HttpStatus.OK);
   }
-
+  
 }
