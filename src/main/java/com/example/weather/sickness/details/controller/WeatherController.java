@@ -21,10 +21,10 @@ public class WeatherController {
   private WeatherService service;
 
   @PostMapping
-  public ResponseEntity<Mono<WeatherResponseVo>> getWeatherDetails(
+  public Mono<ResponseEntity<WeatherResponseVo>> getWeatherDetails(
       @Valid @RequestBody WeatherRequestVo request) {
     Mono<WeatherResponseVo> response = service.getWeatherDetails(request);
-    return new ResponseEntity<>(response, HttpStatus.OK);
+    return response.map(weather -> ResponseEntity.ok().body(weather));
   }
 
 }

@@ -27,11 +27,11 @@ public class SicknessController {
   private SicknessService service;
 
   @PostMapping
-  public ResponseEntity<Mono<SicknessResponseVo>> getSicknessDetails(
+  public Mono<ResponseEntity<SicknessResponseVo>> getSicknessDetails(
       @Valid @RequestBody SicknessRequestVo request)
       throws WellnessWidgetException, ExecutionException, InterruptedException, TimeoutException {
     Mono<SicknessResponseVo> response = service.getSicknessDetails(request);
-    return new ResponseEntity<>(response, HttpStatus.OK);
+    return response.map(sickness -> ResponseEntity.ok().body(sickness));
   }
-  
+
 }
